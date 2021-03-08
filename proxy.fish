@@ -36,6 +36,16 @@ function snap_proxy
     end
 end
 
+function apt_proxy
+    if grep '#Acquire::http::Proxy' /etc/apt/apt.conf.d/proxy.conf > /dev/null
+        echo -e "Acquire::http::Proxy \"http://$PROXY\";\nAcquire::https::Proxy \"http://$PROXY\";" | sudo tee /etc/apt/apt.conf.d/proxy.conf > /dev/null
+        echo "set apt proxy $PROXY"
+    else
+        sed 's/Ac/#Ac/' /etc/apt/apt.conf.d/proxy.conf | sudo tee /etc/apt/apt.conf.d/proxy.conf > /dev/null
+        echo "unset apt proxy"
+    end
+end
+
 function set_proxy
     if test "$http_proxy" = "http://$PROXY"
         set -x http_proxy
@@ -55,6 +65,8 @@ switch $argv[1]
         npm_proxy
     case snap
         snap_proxy
+    case apt
+        apt_proxy
     case '*'
         set_proxy
 end

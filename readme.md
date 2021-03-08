@@ -1,4 +1,6 @@
 # usage
+if your proxy is 127.0.0.1:1080
+or change PROXY in this script
 ```
 #bash / zsh user
 curl https://raw.githubusercontent.com/sleepm/shell-proxy-utils/main/proxy.sh -o ~/proxy
